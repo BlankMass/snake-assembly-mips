@@ -1,1 +1,3 @@
-- Pensar num jeito de descobrir a próxima cauda depois de eliminar a atual.
+- Adicionar comida (e score)
+- Adicionar colisao
+- Pensar em como fazer a cobra andar sozinha
