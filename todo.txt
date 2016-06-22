@@ -1,0 +1,1 @@
+- Pensar num jeito de descobrir a próxima cauda depois de eliminar a atual.
