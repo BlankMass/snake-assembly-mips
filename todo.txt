@@ -1,3 +1,0 @@
-- Adicionar comida (e score)
-- Adicionar colisao
-- Pensar em como fazer a cobra andar sozinha

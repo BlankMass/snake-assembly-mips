@@ -1,0 +1,14 @@
+### To-Do List:
+- [x] Criar telas iniciais
+- [x] Iniciar movimento
+- [x] Deixar o movimento 100% funcional
+- [x] Adicionar Comida gerada aleatoriamente
+- [x] Aumentar tamanho da cobra ao passar pela comida.
+- [x] Adicionar colisao nas bordas
+- [x] Adicionar colisao com a propria cobra
+- [ ] Adicionar score
+- [ ] Usar vidas em vez de game over ao encostar na borda/cobra
+- [ ] Fazer a cobra andar sozinha
+- [ ] Diferentes velocidades de acordo com o score.
+- [ ] Colocar info de vidas no header do jogo.
+- [ ] Colocar score no header do jogo.
