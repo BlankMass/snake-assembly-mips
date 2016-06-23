@@ -1,14 +1,22 @@
 ### To-Do List:
-- [x] Criar telas iniciais
-- [x] Iniciar movimento
-- [x] Deixar o movimento 100% funcional
-- [x] Adicionar Comida gerada aleatoriamente
-- [x] Aumentar tamanho da cobra ao passar pela comida.
-- [x] Adicionar colisao nas bordas
-- [x] Adicionar colisao com a propria cobra
-- [ ] Adicionar score
-- [ ] Usar vidas em vez de game over ao encostar na borda/cobra
-- [ ] Fazer a cobra andar sozinha
-- [ ] Diferentes velocidades de acordo com o score.
-- [ ] Colocar info de vidas no header do jogo.
-- [ ] Colocar score no header do jogo.
+- [x] Create initial screens
+- [x] Initialize movement
+- [x] Make movement system 100% functional
+- [x] Add pseudo-randomly generated food
+- [x] Increase snake's size when eating an apple
+- [x] Add border collision
+- [x] Add collision with the snake's own body
+- [x] Add sound when food is eaten
+- [x] Add sound when a life is lost
+- [x] Add sound when it is game over
+- [x] Use lives instead of instant game over when collision happens
+- [x] Add score
+- [ ] Show score on the screen
+- [ ] Show lives on the screen
+- [ ] Make automatic movement
+- [ ] Use different speeds for the automatic movement according to the current score
+- [ ] Show number of lives in the screen's header
+- [ ] Show current score in the screen's header
+- [ ] Add background songs? Probably not possible
+- [ ] Add ranking (that's going to be hard)
+- [ ] Write the scientific article regarding this project.
