@@ -24,8 +24,9 @@ GRID: 	.space 3800			# Number of bytes of a 304x200 pixels grid for the game (76
 CF: 	.word 5, 5			# Food position
 NOTASNO: .word 12
 NOTASINFO: .word 65, 500, 60, 500, 57, 500, 62, 300, 64, 300, 62, 300, 61, 300, 63, 300, 61, 300, 60, 200, 58, 200, 60, 600
-NOTASNO2: .word 4
+NOTASNO2: .word 3
 NOTASINFO2: .word 52, 500, 50, 500, 48, 700
+GAMEOVERBIN: .asciiz "src/gameover.bin"
 .text	
 	jal FILLSCREEN
 	jal FILLGAME
@@ -222,26 +223,61 @@ PRINTINFO:
 	jr $ra
 	
 GAMEOVER:
+
+	# Game over "song"
 	la $t1,NOTASNO
 	lw $t2,0($t1)
 	la $t1,NOTASINFO
 	li $t0,0
-	li $a2,58	# instrumento
-	li $a3,100	# volume
+	li $a2,58	
+	li $a3,100	
 	LOOP23:
-	beq $t0,$t2, FIM23
-	lw $a0,0($t1)		# nota
-	lw $a1,4($t1)		# duracao
-	li $v0,31		# 33 da pausa a mais
-	syscall
-	move $a0,$a1		#pausa = duracao
-	li $v0,32
-	syscall
-	addi $t1,$t1,8
-	addi $t0,$t0,1
-	j LOOP23
-	
+		beq $t0,$t2, FIM23
+		lw $a0,0($t1)		
+		lw $a1,4($t1)		
+		li $v0,31		
+		syscall
+		move $a0,$a1		
+		li $v0,32
+		syscall
+		addi $t1,$t1,8
+		addi $t0,$t0,1
+		j LOOP23
 	FIM23:
+	
+	# Opening gameover.bin
+	la $a0,GAMEOVERBIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+
+	blt $v0, 0, NOTOPENED
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF000000
+	li $a2,76800
+	li $v0,14
+	syscall
+
+	# Closes the file
+	move $a0,$s1
+	li $v0,16
+	syscall
+	j ENDFILE
+	
+	# If the file could not be opened, a standard screen is used instead.
+	NOTOPENED:
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	jal FILLSCREEN
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
+
+	ENDFILE:
+	li $v0,10
+	syscall
 	
 	jr $ra
 		

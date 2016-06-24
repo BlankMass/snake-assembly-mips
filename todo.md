@@ -11,12 +11,12 @@
 - [x] Add sound when it is game over
 - [x] Use lives instead of instant game over when collision happens
 - [x] Add score
-- [ ] Show score on the screen
-- [ ] Show lives on the screen
+- [x] Implement custom image loading
+- [x] Show Game Over image on ending.
 - [ ] Make automatic movement
 - [ ] Use different speeds for the automatic movement according to the current score
 - [ ] Show number of lives in the screen's header
 - [ ] Show current score in the screen's header
-- [ ] Add background songs? Probably not possible
+- [ ] Add background songs? Probably not possible and/or not worth it.
 - [ ] Add ranking (that's going to be hard)
 - [ ] Write the scientific article regarding this project.
