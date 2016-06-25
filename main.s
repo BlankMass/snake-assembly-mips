@@ -43,9 +43,36 @@ GAMEOVERBIN: .asciiz "src/gameover.bin"
 		la $t0, CD		
 		lw $s4, 0($t0)		# Current Direction
 		
-		li $v0, 12
-		syscall
-  		
+		la $t1, 0xFF000000
+		lw $t2, 0($t1)
+		lw $t3, 4($t1)
+		  		
+		beq $t2, $0, KEEPDIR
+		beq $t3, 119, CUSTOMDIR
+		beq $t3,  97, CUSTOMDIR
+		beq $t3, 115, CUSTOMDIR
+		beq $t3, 100, CUSTOMDIR
+		KEEPDIR:
+			bne $s4, 1, NOTW
+				li $t3, 119
+				j CUSTOMDIR
+			NOTW:
+			bne $s4, 2, NOTA
+				li $t3, 97
+				j CUSTOMDIR
+			NOTA:
+			bne $s4, 3, NOTS
+				li $t3, 115
+				j CUSTOMDIR
+			NOTS:
+			bne $s4, 4, NOTD		  		
+		  		li $t3, 100
+				j CUSTOMDIR
+		  	NOTD:
+		  		j END
+		CUSTOMDIR:
+		add $v0, $t3, $zero
+		
 		addi $t1, $s6, 8
 		mulu $t2, $s0, 4
 		addu $t1, $t1, $t2
@@ -214,7 +241,9 @@ GAMEOVERBIN: .asciiz "src/gameover.bin"
 		
 		
 	NOT:
-		
+		li $a0, 50
+		li $v0, 32
+		syscall
 		j GAMELOOP
 		j END
 		
@@ -389,7 +418,7 @@ FILLSCREEN:
 	FORA:	
 	li $t3, 0xFF000000
 	li $t2, 0
-	sb $t2, 0($t3)
+	sb $t2, 0($t3)		# Storing byte 0 to control key input.
 	jr $ra
 
 # Draws the initial snake (size 6)
@@ -478,3 +507,6 @@ FILLGAME:
 FORA2:	jr $ra
 
 END:
+
+.ktext
+	eret

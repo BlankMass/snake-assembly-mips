@@ -13,7 +13,7 @@
 - [x] Add score
 - [x] Implement custom image loading
 - [x] Show Game Over image on ending.
-- [ ] Make automatic movement
+- [x] Make automatic movement
 - [ ] Use different speeds for the automatic movement according to the current score
 - [ ] Show number of lives in the screen's header
 - [ ] Show current score in the screen's header
