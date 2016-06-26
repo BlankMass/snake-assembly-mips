@@ -253,7 +253,11 @@ LIVESBIN: .asciiz "src/lives.bin"
 		
 		
 	NOT:
+		la $t0, SSL
+		lw $t0, 4($t0)
+		divu $t0, $t0, 5
 		li $a0, 50
+		divu $a0, $a0, $t0
 		li $v0, 32
 		syscall
 		j GAMELOOP
