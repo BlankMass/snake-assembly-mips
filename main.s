@@ -27,6 +27,9 @@ NOTASINFO: .word 65, 500, 60, 500, 57, 500, 62, 300, 64, 300, 62, 300, 61, 300, 
 NOTASNO2: .word 3
 NOTASINFO2: .word 52, 500, 50, 500, 48, 700
 GAMEOVERBIN: .asciiz "src/gameover.bin"
+LIFEBIN: .asciiz "src/life.bin"
+NOLIFEBIN: .asciiz "src/nolife.bin"
+LIVESBIN: .asciiz "src/lives.bin"
 .text	
 	jal FILLSCREEN
 	jal FILLGAME
@@ -48,10 +51,23 @@ GAMEOVERBIN: .asciiz "src/gameover.bin"
 		lw $t3, 4($t1)
 		  		
 		beq $t2, $0, KEEPDIR
-		beq $t3, 119, CUSTOMDIR
-		beq $t3,  97, CUSTOMDIR
-		beq $t3, 115, CUSTOMDIR
-		beq $t3, 100, CUSTOMDIR
+		
+		# This whole KEEPDIR/CUSTOMDIR is to check whether the user is trying to walk on the opposite direction the snake is currently in.
+		bne $t3, 119, NOTW1
+		beq $s4, 3, KEEPDIR
+		j CUSTOMDIR
+		NOTW1:
+		bne $t3,  97, NOTA1
+		beq $s4, 4, KEEPDIR
+		j CUSTOMDIR
+		NOTA1:
+		bne $t3, 115, NOTS1
+		beq $s4, 1, KEEPDIR
+		j CUSTOMDIR
+		NOTS1:
+		bne $t3, 100, KEEPDIR
+		beq $s4, 2, KEEPDIR
+		j CUSTOMDIR
 		KEEPDIR:
 			bne $s4, 1, NOTW
 				li $t3, 119
@@ -82,25 +98,21 @@ GAMEOVERBIN: .asciiz "src/gameover.bin"
 	
 	# Tests the current pressed key and acts according to it
 	W:	bne $v0, 119, A
-		beq $s4, 3, NOT
 		addi $s1, $s1, -1	# Updates head's address and XY coordinates.
 		addi $s7, $s7, -1280
 		addi $s4, $zero, 1	# Updates current direction
 		
 	A: 	bne $v0,  97, S
-		beq $s4, 4, NOT
 		addi $s0, $s0, -1	# Updates head's address and XY coordinates.
 		addi $s7, $s7, -4
 		addi $s4, $zero, 2	# Updates current direction
 		
 	S: 	bne $v0, 115, D
-		beq $s4, 1, NOT
 		addi $s1, $s1, 1	# Updates head's address and XY coordinates.
 		addi $s7, $s7, 1280
 		addi $s4, $zero, 3	# Updates current direction
 		
 	D:	bne $v0, 100, CHECK
-		beq $s4, 2, NOT
 		addi $s0, $s0, 1	# Updates head's address and XY coordinates.
 		addi $s7, $s7, 4
 		addi $s4, $zero, 4	# Updates current direction
@@ -291,7 +303,6 @@ GAMEOVER:
 	syscall
 
 	# Closes the file
-	move $a0,$s1
 	li $v0,16
 	syscall
 	j ENDFILE
@@ -487,6 +498,107 @@ INITSNAKE:
 # Fills the screen with the space where the snake will be allowed to be on.
 # There is no problem in using s registers because this function is called in the very beginning of the program
 FILLGAME: 
+	la $t0, SSL
+	lw $t3, 8($t0)
+	
+	# Loading the Heart equivalent of 3rd life.
+	blt $t3, 3, LT3Lives
+	la $a0,LIFEBIN
+	j Lives3
+	LT3Lives:
+	la $a0, NOLIFEBIN
+	Lives3:
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	li $t1, 0
+	li $t2, 20
+	
+	move $a0,$v0
+	la $a1,0xFF0008A4
+	li $a2,20
+	li $v0,14
+	loop3:				# Loop to load 20 lines.
+	beq $t1, $t2, outloop3
+		syscall
+		addi $a1, $a1, 320
+		addi $t1, $t1, 1
+		li $v0, 14
+		j loop3
+	outloop3:
+	
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	# Loading the Heart equivalent of 2nd life.
+	blt $t3, 2, LT2Lives
+	la $a0,LIFEBIN
+	j Lives2
+	LT2Lives:
+	la $a0, NOLIFEBIN
+	Lives2:
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	li $t1, 0
+	li $t2, 20
+	
+	move $a0,$v0
+	la $a1,0xFF00088C
+	li $a2,20
+	li $v0,14
+	loop32:				# Same loop as before.
+	beq $t1, $t2, outloop32
+		syscall
+		addi $a1, $a1, 320
+		addi $t1, $t1, 1
+		li $v0, 14
+		j loop32
+	outloop32:
+	
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	# Loading the Heart equivalent of 1st and last life.
+	blt $t3, 1, NoLives
+	la $a0,LIFEBIN
+	j Lives1
+	NoLives:
+	la $a0, NOLIFEBIN
+	Lives1:
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+
+	li $t1, 0
+	li $t2, 20
+	
+	move $a0,$v0
+	la $a1,0xFF000874
+	li $a2,20
+	li $v0,14
+	loop321:
+	beq $t1, $t2, outloop321
+		syscall
+		addi $a1, $a1, 320
+		addi $t1, $t1, 1
+		li $v0, 14
+		j loop321
+	outloop321:
+	
+	# Closes the file
+	li $v0,16
+	syscall
+	
+		
+
 	li $t1,0xFF012200		# End of the grid
 	li $t2,0xFF002800		# Start of the grid
 	li $t9,0xEFEFEFEF		# Color of the grid

@@ -15,7 +15,7 @@
 - [x] Show Game Over image on ending.
 - [x] Make automatic movement
 - [ ] Use different speeds for the automatic movement according to the current score
-- [ ] Show number of lives in the screen's header
+- [x] Show number of lives in the screen's header
 - [ ] Show current score in the screen's header
 - [ ] Add background songs? Probably not possible and/or not worth it.
 - [ ] Add ranking (that's going to be hard)
