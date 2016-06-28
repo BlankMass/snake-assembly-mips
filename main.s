@@ -26,6 +26,12 @@ NOTASNO: .word 12
 NOTASINFO: .word 65, 500, 60, 500, 57, 500, 62, 300, 64, 300, 62, 300, 61, 300, 63, 300, 61, 300, 60, 200, 58, 200, 60, 600
 NOTASNO2: .word 3
 NOTASINFO2: .word 52, 500, 50, 500, 48, 700
+CD1BIN: .asciiz "src/cd1.bin"
+CD2BIN: .asciiz "src/cd2.bin"
+CD3BIN: .asciiz "src/cd3.bin"
+CDGOBIN:.asciiz "src/cdgo.bin"
+GAMEBGBIN: .asciiz "src/gamebg.bin"
+GETREADYBIN: .asciiz "src/getready.bin"
 GAMEOVERBIN: .asciiz "src/gameover.bin"
 LIFEBIN: .asciiz "src/life.bin"
 NOLIFEBIN: .asciiz "src/nolife.bin"
@@ -46,7 +52,7 @@ LIVESBIN: .asciiz "src/lives.bin"
 		la $t0, CD		
 		lw $s4, 0($t0)		# Current Direction
 		
-		la $t1, 0xFF000000
+		la $t1, 0xFF100000
 		lw $t2, 0($t1)
 		lw $t3, 4($t1)
 		  		
@@ -199,7 +205,6 @@ LIVESBIN: .asciiz "src/lives.bin"
 		li $t2, 1
 		sw $t2, 28($t0)		# Resetting all current info about the snake.
 		jal FILLSCREEN
-		jal PRINTINFO
 		jal FILLGAME
 		jal RESETGRID
 		jal INITSNAKE
@@ -262,10 +267,6 @@ LIVESBIN: .asciiz "src/lives.bin"
 		syscall
 		j GAMELOOP
 		j END
-		
-PRINTINFO:
-
-	jr $ra
 	
 GAMEOVER:
 
@@ -601,28 +602,134 @@ FILLGAME:
 	li $v0,16
 	syscall
 	
-		
+	# Opening gameover.bin
+	la $a0,GETREADYBIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF002800
+	li $a2,66560
+	li $v0,14
+	syscall
 
-	li $t1,0xFF012200		# End of the grid
-	li $t2,0xFF002800		# Start of the grid
-	li $t9,0xEFEFEFEF		# Color of the grid
-	li $t4,0xFF000000		# Number to subtract so a remainder can be found easier.
-	li $t6, 8			# Border offset
-	li $t7, 311			# Border offset
-	LOOP2: 	beq $t2,$t1,FORA2	# Checks if the end is 
-		subu $t0, $t2, $t4
-		div $t3, $t0, 320	
-		mfhi $t3		# Gets X index on the grid.
-		slt $t5, $t3, $t6	
-		beq $t5, 1, T
-		sgt $t5, $t3, $t7
-		beq $t5, 1, T		# Checks if the current index is on the border limits.
-		sw $t9,0($t2)
-	T:	addi $t2,$t2,4
-	j LOOP2
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	li $a0, 1000
+	li $v0, 32
+	syscall
+	
+	# Opening gameover.bin
+	la $a0,CD3BIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF002800
+	li $a2,66560
+	li $v0,14
+	syscall
+
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	li $a0, 1000
+	li $v0, 32
+	syscall
+	
+	# Opening gameover.bin
+	la $a0,CD2BIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF002800
+	li $a2,66560
+	li $v0,14
+	syscall
+
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	li $a0, 1000
+	li $v0, 32
+	syscall
+	
+	# Opening gameover.bin
+	la $a0,CD1BIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF002800
+	li $a2,66560
+	li $v0,14
+	syscall
+
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	li $a0, 1000
+	li $v0, 32
+	syscall
+	
+	# Opening gameover.bin
+	la $a0,CDGOBIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF002800
+	li $a2,66560
+	li $v0,14
+	syscall
+
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	li $a0, 1000
+	li $v0, 32
+	syscall
+	
+	# Opening gameover.bin
+	la $a0,GAMEBGBIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF002800
+	li $a2,66560
+	li $v0,14
+	syscall
+
+	# Closes the file
+	li $v0,16
+	syscall
+	
 FORA2:	jr $ra
 
 END:
-
-.ktext
-	eret

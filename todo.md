@@ -16,8 +16,10 @@
 - [x] Make automatic movement
 - [x] Use different speeds for the automatic movement according to the current score
 - [x] Show number of lives in the screen's header
+- [ ] Add countdown before starting the game
 - [ ] Show current score in the screen's header
+- [ ] Show current snake's size in the screen's header
 - [ ] Think of a better way to relate score and speed.
-- [ ] Add background songs? Probably not possible and/or not worth it.
-- [ ] Add ranking (that's going to be hard)
+- [ ] Add background songs? TBD
+- [ ] Add ranking? TBD
 - [ ] Write the scientific article regarding this project.
