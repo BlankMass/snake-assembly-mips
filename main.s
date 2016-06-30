@@ -36,6 +36,7 @@ GAMEOVERBIN: .asciiz "src/gameover.bin"
 LIFEBIN: .asciiz "src/life.bin"
 NOLIFEBIN: .asciiz "src/nolife.bin"
 LIVESBIN: .asciiz "src/lives.bin"
+SCORESIZEBIN: .asciiz "src/scoresize.bin"
 .text	
 	jal FILLSCREEN
 	jal FILLGAME
@@ -248,8 +249,10 @@ LIVESBIN: .asciiz "src/lives.bin"
 			sw $t2, 320($t3)
 			sw $t2, 640($t3)
 			sw $t2, 960($t3)	# Deletes the last piece of the body
+			j NOTFOOD2
 		FOOOOD:
-		
+		jal FILLINFO
+		NOTFOOD2:
 		
 		add $a0, $s4, $zero	# Direction
 		add $a1, $s5, $zero	# Is food on.
@@ -267,6 +270,51 @@ LIVESBIN: .asciiz "src/lives.bin"
 		syscall
 		j GAMELOOP
 		j END
+
+FILLINFO:
+	la $t0, SSL
+	lw $t1, 4($t0)		# Size integer
+	lw $t0, 0($t0)		# Current score
+	
+	la $a0, SCORESIZEBIN
+	li $a1,0
+	li $a2,0
+	li $v0,13
+	syscall
+	
+	# Transfer all the file to the VGA memory
+	move $a0,$v0
+	la $a1,0xFF000005
+	li $a2,200
+	li $v0,14
+	li $t6, 0
+	li $t7, 32
+	LOOPHEADER:
+	beq $t6, $t7, OUTLOOPHEADER
+		syscall
+		addi $a1, $a1, 320
+		addi $t6, $t6, 1
+		li $v0, 14
+		j LOOPHEADER
+	OUTLOOPHEADER:
+	# Closes the file
+	li $v0,16
+	syscall
+	
+	move $a0, $t0
+	li $a1, 115
+	li $a2, 5
+	li $a3, 0xFF00
+	li $v0, 101
+	syscall
+	move $a0, $t1
+	li $a1, 98
+	li $a2, 18
+	li $a3, 0xFF00
+	li $v0, 101
+	syscall
+
+	jr $ra
 	
 GAMEOVER:
 
@@ -505,6 +553,12 @@ INITSNAKE:
 FILLGAME: 
 	la $t0, SSL
 	lw $t3, 8($t0)
+	
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	jal FILLINFO
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
 	
 	# Loading the Heart equivalent of 3rd life.
 	blt $t3, 3, LT3Lives
