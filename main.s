@@ -656,7 +656,7 @@ FILLGAME:
 	li $v0,16
 	syscall
 	
-	# Opening gameover.bin
+	# Opening image of "prepare-se"
 	la $a0,GETREADYBIN
 	li $a1,0
 	li $a2,0
@@ -674,11 +674,12 @@ FILLGAME:
 	li $v0,16
 	syscall
 	
+	# Sleep so the image lasts for a second
 	li $a0, 1000
 	li $v0, 32
 	syscall
 	
-	# Opening gameover.bin
+	# Opening screen with 3
 	la $a0,CD3BIN
 	li $a1,0
 	li $a2,0
@@ -696,11 +697,20 @@ FILLGAME:
 	li $v0,16
 	syscall
 	
+	# Sound effect of "countdown"
+	li $a0, 64
+	li $a1, 1000
+	li $a2, 24
+	li $a3, 65
+	li $v0, 31
+	syscall
+	
+	# Sleep so the image lasts for a second
 	li $a0, 1000
 	li $v0, 32
 	syscall
 	
-	# Opening gameover.bin
+	# Opening screen with 2
 	la $a0,CD2BIN
 	li $a1,0
 	li $a2,0
@@ -718,11 +728,20 @@ FILLGAME:
 	li $v0,16
 	syscall
 	
+	# Sound effect of "countdown"
+	li $a0, 64
+	li $a1, 1000
+	li $a2, 24
+	li $a3, 65
+	li $v0, 31
+	syscall
+	
+	# Sleep so the image lasts for a second
 	li $a0, 1000
 	li $v0, 32
 	syscall
 	
-	# Opening gameover.bin
+	# Opening screen with 1
 	la $a0,CD1BIN
 	li $a1,0
 	li $a2,0
@@ -740,11 +759,20 @@ FILLGAME:
 	li $v0,16
 	syscall
 	
+	# Sound effect of "countdown"
+	li $a0, 64
+	li $a1, 1000
+	li $a2, 24
+	li $a3, 65
+	li $v0, 31
+	syscall
+	
+	# Sleep so the image lasts for a second
 	li $a0, 1000
 	li $v0, 32
 	syscall
 	
-	# Opening gameover.bin
+	# Opening image with "GO"
 	la $a0,CDGOBIN
 	li $a1,0
 	li $a2,0
@@ -761,12 +789,21 @@ FILLGAME:
 	# Closes the file
 	li $v0,16
 	syscall
+
+	# Sound effect of "countdown"
+	li $a0, 69
+	li $a1, 1000
+	li $a2, 24
+	li $a3, 65
+	li $v0, 31
+	syscall
 	
+	# Sleep so the image lasts for a second
 	li $a0, 1000
 	li $v0, 32
 	syscall
 	
-	# Opening gameover.bin
+	# Opening pink background for the "arena"
 	la $a0,GAMEBGBIN
 	li $a1,0
 	li $a2,0
