@@ -19,7 +19,5 @@
 - [x] Add countdown before starting the game
 - [x] Show current score in the screen's header
 - [x] Show current snake's size in the screen's header
-- [ ] Think of a better way to relate score and speed.
-- [ ] Add background songs? TBD
-- [ ] Add ranking? TBD
-- [ ] Write the scientific article regarding this project.
+- [x] Write the scientific article regarding this project.
+- [x] Finished.
